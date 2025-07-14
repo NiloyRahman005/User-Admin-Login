@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head><title>Home</title></head>
+
+<head>
+    <title>Home</title>
+</head>
+
 <body>
     <h1>Welcome to the Public Frontend</h1>
 
@@ -14,4 +18,5 @@
 
     <br><a href="/admin/login">Login as Admin</a>
 </body>
+
 </html>

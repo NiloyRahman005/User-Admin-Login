@@ -1,0 +1,162 @@
+.sponsor-slider {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .sponsor-track {
+    display: flex;
+    width: max-content;
+    animation: scrollLoop 25s linear infinite;
+  }
+
+  .sponsor-logos {
+    display: flex;
+  }
+
+  .sponsor-logos img {
+    width: 150px;
+    height: 80px;
+    object-fit: contain;
+    margin-right: 40px;
+    filter: grayscale(0.5);
+    transition: filter 0.3s ease;
+  }
+
+  .sponsor-logos img:hover {
+    filter: grayscale(0);
+  }
+
+  @keyframes scrollLoop {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 576px) {
+    .sponsor-logos img {
+      width: 100px;
+      height: 60px;
+      margin-right: 20px;
+    }
+  }
+/* Sponsorship Section */
+.sponsorship-section {
+  background: var(--bg-light);
+}
+
+.pricing-card {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* .pricing-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #c82333;
+} */
+
+.pricing-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-lg);
+}
+
+.pricing-card.featured {
+  transform: scale(1.05);
+  border: 1.5px solid #ef4444;
+}
+
+.pricing-card.featured::before {
+  height: 6px;
+}
+
+.card-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--gradient);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.card-header {
+  margin-bottom: 2rem;
+}
+
+.card-icon {
+  width: 80px;
+  height: 80px;
+  background: #f16a77;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white !important;
+  font-size: 2rem;
+  margin: 0 auto 1rem;
+}
+
+.card-header h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+
+.card-price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.currency {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #f16a77;
+}
+
+.amount {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #f16a77;
+}
+
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 2rem;
+}
+
+.features-list li {
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.features-list .bi-check-circle-fill {
+  color: #10b981;
+}
+
+.features-list .bi-x-circle {
+  color: #ef4444;
+}
+  
