@@ -776,11 +776,11 @@
 
 
             </div>
-            {{-- <div class="text-center mt-5">
+            <div class="text-center mt-5">
                 <a href="#" class="btn btn-outline-light px-4 py-2 rounded-pill"
                     style="background-color: #C82333;">View
                     More Events</a>
-            </div> --}}
+            </div>
         </div>
     </section>
 
