@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Route;
 //     return view('app');
 // });
 Route::get('/',[FontendController::class,'index'])->name('index');
+Route::get('/event/details/{id}',[FontendController::class,'event_details'])->name('event_details');
+
+Route::post('/event/booking',[FontendController::class,'event_booking'])->name('event_booking');
+
+
+
+
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -62,8 +70,21 @@ Route::prefix('admin')->name('admin.')->group(function () {
          'event_details'])->name('event_details');
  Route::post('/event_update/{id}', [\App\Http\Controllers\Admin\Backend_controller::class,
  'event_update'])->name('event_update');
-        
 
+ Route::get('/event_booking_list', [\App\Http\Controllers\Admin\Backend_controller::class,
+ 'event_booking_list'])->name('event_booking_list');
+
+  Route::get('/event_req_dlt/{id}', [\App\Http\Controllers\Admin\Backend_controller::class,
+  'event_req_dlt'])->name('event_req_dlt');
+
+   Route::get('/sponsers', [\App\Http\Controllers\Admin\Backend_controller::class,
+   'sponsers'])->name('sponsers');
+    Route::post('/sponser_add', [\App\Http\Controllers\Admin\Backend_controller::class,
+    'sponser_add'])->name('sponser_add');
+     Route::post('/sponser_edit', [\App\Http\Controllers\Admin\Backend_controller::class,
+     'sponser_edit'])->name('sponser_edit');
+     Route::delete('/sponser_dlt', [\App\Http\Controllers\Admin\Backend_controller::class,
+     'sponser_dlt'])->name('sponser_dlt');
 
         
     });

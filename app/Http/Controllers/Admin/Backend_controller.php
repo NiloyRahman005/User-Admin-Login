@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Cant_Miss_Event;
 use App\Models\Event;
+use App\Models\Event_booking;
 use App\Models\Featured_content;
+use App\Models\Sponsers;
 use Illuminate\Http\Request;
 use App\Models\Top_slider;
 use App\Models\You_tube;
@@ -275,5 +277,63 @@ $event->save();
 
 return redirect()->back()->with('success', 'Event updated successfully!');
 }
+public function event_booking_list()
+{
+ $event_booking =  Event_booking::where('delete',0)->get();
+  return view('admin.event_booking_list',compact('event_booking'));
+}
+public function event_req_dlt($id)
+{
+  Event_booking::find($id)->update([
+    'delete'=>1
+  ]);
+  return back()->with('success',"Successfully Deleted");
+}
 
+public function sponsers()
+{
+  $sponser = Sponsers::where('delete',0)->get();
+  return view('admin.sponsors',compact('sponser'));
+}
+public function sponser_add(Request $request)
+{
+$validated = $request->validate([
+'name' => 'required|string|max:255',
+'amount' => 'required|numeric|min:0',
+'content' => 'required|nullable|string',
+]);
+
+Sponsers::create($validated);
+
+return back()->with('success', 'Sponsor added successfully!');
+}
+public function sponser_edit(Request $request)
+{
+// ✅ Validate input
+$validated = $request->validate([
+'sponser_id' => 'required|exists:sponsers,id',
+'name' => 'required|string|max:255',
+'amount' => 'required|numeric|min:0',
+'content' => 'required|nullable|string',
+]);
+
+// ✅ Find sponsor and update
+$sponser = Sponsers::findOrFail($request->sponser_id);
+
+$sponser->update([
+'name' => $validated['name'],
+'amount' => $validated['amount'],
+'content' => $validated['content'],
+]);
+
+// ✅ Redirect back with success message
+return redirect()->back()->with('success', 'Sponsor updated successfully!');
+}
+public function sponser_dlt(Request $request)
+{
+  Sponsers::findOrFail($request->sponser_id)->update([
+    'delete'=>1
+  ]);
+  return back()->with('success',"Successfully Deleted");
+}
 }

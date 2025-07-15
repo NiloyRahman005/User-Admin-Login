@@ -50,6 +50,16 @@
             <span>Event</span></a>
     </li>
 
+    <li class="nav-item {{ request()->routeIs('admin.event_booking_list') ? 'active' : '' }}">
+        <a class="nav-link " href="{{ route('admin.event_booking_list') }}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Event Booking list</span></a>
+    </li>
+    <li class="nav-item {{ request()->routeIs('admin.sponsers') ? 'active' : '' }}">
+        <a class="nav-link " href="{{ route('admin.sponsers') }}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Sponsors List</span></a>
+    </li>
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
