@@ -7,9 +7,14 @@ use App\Models\Cant_Miss_Event;
 use App\Models\Event;
 use App\Models\Event_booking;
 use App\Models\Featured_content;
+use App\Models\Footers;
+use App\Models\Logo;
+use App\Models\Mission;
+use App\Models\Sponser_book;
 use App\Models\Sponsers;
 use Illuminate\Http\Request;
 use App\Models\Top_slider;
+use App\Models\Vision;
 use App\Models\You_tube;
 use Illuminate\Support\Facades\File;
 
@@ -336,4 +341,203 @@ public function sponser_dlt(Request $request)
   ]);
   return back()->with('success',"Successfully Deleted");
 }
+public function sponsers_booking_lists()
+{
+  $sponser_book = Sponser_book::where('delete',0)->get();
+  return view('admin.sponsor_booking_lists',compact('sponser_book'));
+}
+public function sponser_book_dlt($id)
+{
+  Sponser_book::find($id)->update([
+    'delete'=>1
+  ]);
+  return back()->with('success',"Successfully Deleted");
+}
+public function companies_logo()
+{
+  $Logo = Logo::all();
+  return view('admin.companies_logo',compact('Logo'));
+}
+public function companies_logo_insert(Request $request)
+{
+$request->validate([
+'logo' => 'required|image|mimes:jpeg,png,jpg,webp,svg|max:2048',
+]);
+
+$imagePath = null;
+
+if ($request->hasFile('logo')) {
+$image = $request->file('logo');
+$filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+// Define folder path
+$folderPath = public_path('logo');
+
+// Create folder if not exists
+if (!File::exists($folderPath)) {
+File::makeDirectory($folderPath, 0755, true);
+}
+
+// Move uploaded file
+$image->move($folderPath, $filename);
+$imagePath = 'logo/' . $filename;
+}
+
+// Store in database
+Logo::create([
+'image' => $imagePath,
+]);
+
+return back()->with('success', 'Logo uploaded successfully!');
+}
+public function logo_delete($id)
+{
+  Logo::find($id)->delete();
+  return back()->with('success',"Successfully Deleted");
+}
+public function footer()
+{
+   $footer = Footers::first();
+  return view('admin.footer',compact('footer'));
+}
+public function footer_added(Request $request)
+{
+   $request->validate([
+   'lattitude' => 'required|string|max:255',
+   'longitude' => 'required|string|max:255',
+   'fb_link' => 'required|url|max:255',
+   'email' => 'required|email|max:255',
+   'phone' => 'required|string|max:20',
+   ]);
+
+   // Assuming there's only one footer row, so no unique identifier,
+   // just update the first row or create if none exists.
+
+   // You can use id = 1 as a fixed identifier or use firstOrNew
+
+   $footer = Footers::first();
+
+   if ($footer) {
+   $footer->update([
+   'lattitude' => $request->lattitude,
+   'longitude' => $request->longitude,
+   'fb_link' => $request->fb_link,
+   'email' => $request->email,
+   'phone' => $request->phone,
+   ]);
+   } else {
+   Footers::create([
+   'lattitude' => $request->lattitude,
+   'longitude' => $request->longitude,
+   'fb_link' => $request->fb_link,
+   'email' => $request->email,
+   'phone' => $request->phone,
+   ]);
+   }
+
+   return back()->with('success', 'Footer information saved successfully!');
+}
+public function mission()
+{
+  $mission = Mission::first();
+  return view('admin.mission',compact('mission'));
+}
+public function mission_store(Request $request)
+{
+    $request->validate([
+    'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+    'content' => 'required|string',
+    ]);
+
+    $imagePath = null;
+
+    // Check if a record already exists
+    $mission = Mission::first();
+
+    // Handle new image upload
+    if ($request->hasFile('image')) {
+    $image = $request->file('image');
+    $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+    $folderPath = public_path('missions');
+    if (!File::exists($folderPath)) {
+    File::makeDirectory($folderPath, 0755, true);
+    }
+
+    $image->move($folderPath, $filename);
+    $imagePath = 'missions/' . $filename;
+
+    // If updating and image exists, delete old one
+    if ($mission && $mission->image && File::exists(public_path($mission->image))) {
+    File::delete(public_path($mission->image));
+    }
+    }
+
+    if ($mission) {
+    // Update
+    $mission->update([
+    'image' => $imagePath ?? $mission->image, // keep old if no new image
+    'content' => $request->input('content'),
+    ]);
+
+    return back()->with('success', 'Mission content updated successfully.');
+    } else {
+    // Create
+    Mission::create([
+    'image' => $imagePath,
+    'content' => $request->input('content'),
+    ]);
+
+    return back()->with('success', 'Mission content added successfully.');
+    }
+   
+}
+ public function vision()
+ {
+ $vision = Vision::first();
+ return view('admin.vision', compact('vision'));;
+ }
+ public function vision_store(Request $request)
+ {
+   $request->validate([
+   'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+   'content' => 'required|string',
+   ]);
+
+   $vision = Vision::first(); // Only one vision entry allowed
+
+   $imagePath = $vision->image ?? null;
+
+   if ($request->hasFile('image')) {
+   $image = $request->file('image');
+   $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+   $folderPath = public_path('visions');
+
+   if (!File::exists($folderPath)) {
+   File::makeDirectory($folderPath, 0755, true);
+   }
+
+   // Delete old image if exists
+   if ($vision && File::exists(public_path($vision->image))) {
+   File::delete(public_path($vision->image));
+   }
+
+   $image->move($folderPath, $filename);
+   $imagePath = 'visions/' . $filename;
+   }
+
+   if ($vision) {
+   $vision->update([
+   'image' => $imagePath,
+   'content' => $request->input('content'),
+   ]);
+   } else {
+   Vision::create([
+   'image' => $imagePath,
+   'content' => $request->input('content'),
+   ]);
+   }
+
+   return back()->with('success', 'Vision content saved successfully.');
+ }
 }

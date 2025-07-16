@@ -18,7 +18,7 @@
         content="Join us at the NJ Real Estate Expo 2025 — the premier event for real estate professionals, investors, and enthusiasts.">
     <meta property="og:image" content="https://www.njrealestateexpo.com/images/og-image.jpg">
 
- 
+
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
@@ -62,6 +62,11 @@
             color: #444;
             position: relative;
             transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link.active,
+        .navbar-nav .nav-link.show {
+            color: #e50914;
         }
 
         .nav-link::after {
@@ -306,17 +311,19 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
+
             <!-- Navbar Links -->
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="Mission.html">Mission</a></li>
-                    <li class="nav-item"><a class="nav-link" href="our_vission.html">Vision</a></li>
-                    <li class="nav-item"><a class="nav-link" href="exhibitors.html">Sponsorhip Listing</a></li>
+                    <li class="nav-item"><a class="nav-link  {{ request()->routeIs('index') ? 'active' : '' }}"
+                            href="{{ route('index') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('mission') }}">Mission</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('vision') }}">Vision</a></li>
+
                     <li class="nav-item"><a class="nav-link" href="image_gallery.html">Gallery</a></li>
-                    <li class="nav-item"><a class="nav-link" href="event-details.html">Event-details</a></li>
+
                     <li class="nav-item"><a class="nav-link" href="login_register.html">Login/Register</a></li>
-                    <li class="nav-item"><a class="nav-link" href="event-listing.html">event-listing</a></li>
+
 
 
 
@@ -555,7 +562,7 @@
             color: #28a745;
         }
     </style>
- 
+
 
 
 
@@ -715,6 +722,9 @@
 
 
 
+    @php
+        $footers = App\Models\Footers::first();
+    @endphp
 
     <footer id="contact" class="bg-black text-white py-5">
         <div class="container">
@@ -723,7 +733,9 @@
                 <div class="col-md-6 mb-4 mb-md-0">
                     <div class="ratio ratio-4x3 rounded-3 overflow-hidden">
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387190.2799175698!2d-74.25987549037642!3d40.69767006363654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQyJzI2LjYiTiA3NMKwMTUnNDIuMyJX!5e0!3m2!1sen!2sus!4v1620213729894!5m2!1sen!2sus"
+                            src="{{ $footers && $footers->lattitude && $footers->longitude
+                                ? "https://maps.google.com/maps?q={$footers->lattitude},{$footers->longitude}&z=15&output=embed"
+                                : 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387190.2799175698!2d-74.25987549037642!3d40.69767006363654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQyJzI2LjYiTiA3NMKwMTUnNDIuMyJX!5e0!3m2!1sen!2sus!4v1620213729894!5m2!1sen!2sus' }}"
                             width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
@@ -733,19 +745,20 @@
                 <div class="col-md-6 text-center text-md-start">
                     <h5>Get In Touch With Us</h5>
                     <p>Email:
-                        <a href="mailto:info@njrealestateexpo.com" class="text-white text-decoration-none">
-                            info@njrealestateexpo.com
+                        <a href="mailto:{{ $footers->email ?? 'info@njrealestateexpo.com' }}"
+                            class="text-white text-decoration-none">
+                            {{ $footers->email ?? 'info@njrealestateexpo.com' }}
                         </a>
                     </p>
                     <p>Phone:
-                        <a href="tel:+11234567890" class="text-white text-decoration-none">
-                            (123) 456-7890
+                        <a href="tel:{{ $footers->phone ?? '(123) 456-7890' }}" class="text-white text-decoration-none">
+                            {{ $footers->phone ?? '(123) 456-7890' }}
                         </a>
                     </p>
                     <div class="social-icons mt-3">
-                        <a href="#" class="text-white mx-2 fs-4"><i class="bi bi-linkedin"></i></a>
-                        <a href="#" class="text-white mx-2 fs-4"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="text-white mx-2 fs-4"><i class="bi bi-facebook"></i></a>
+                        <a href="{{ $footers->fb_link ?? '#' }}" class="text-white mx-2 fs-4"><i
+                                class="bi bi-facebook"></i></a>
+
                     </div>
                     <p class="mb-0 mt-3">&copy; 2025 NJ Real Estate Expo. All Rights Reserved.</p>
                 </div>

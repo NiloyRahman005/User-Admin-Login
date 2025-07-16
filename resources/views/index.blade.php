@@ -5,7 +5,24 @@
             ? asset($Cant_Miss_Event->image)
             : 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1600&q=80';
     @endphp
+
     <section class="hero-carousel">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="2000">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
@@ -137,7 +154,8 @@
                                 <p class="card-text">
                                     {!! $shortText !!}
                                 </p>
-                                <a href="{{ route('event_details', $event->id) }}" class="btn btn-custom mt-2">Details</a>
+                                <a href="{{ route('event_details', $event->id) }}"
+                                    class="btn btn-custom mt-2">Details</a>
                             </div>
                         </div>
                     </div>
@@ -169,9 +187,6 @@
                     <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
                         <div class="pricing-card silver bg-white shadow-sm p-4 rounded-4">
                             <div class="card-header text-center mb-3">
-                                {{-- <div class="card-icon fs-2 text-secondary mb-2">
-                                    <i class="bi bi-award"></i>
-                                </div> --}}
                                 <h3 class="fw-bold">{{ $sponser->name }}</h3>
                                 <div class="card-price fw-bold fs-4">
                                     <span class="currency">$</span><span class="amount">{{ $sponser->amount }}</span>
@@ -179,11 +194,60 @@
                             </div>
                             <div class="card-body">
                                 {!! $sponser->content !!}
-                                <a href="#contact" class="btn btn-outline-primary w-100">Choose Silver</a>
+
+                                @if (Auth::check())
+                                    <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal"
+                                        data-bs-target="#bookingModal{{ $sponser->id }}">
+                                        Choose Silver
+                                    </button>
+                                @else
+                                    <a href="{{ route('login') }}" class="btn btn-outline-primary w-100">Please Login</a>
+                                @endif
                             </div>
                         </div>
                     </div>
+
+                    {{-- Booking Modal --}}
+                    @if (Auth::check())
+                        <div class="modal fade mt-5" id="bookingModal{{ $sponser->id }}" tabindex="-1"
+                            aria-labelledby="bookingModalLabel{{ $sponser->id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <form action="{{ route('sponser.book') }}" method="POST" class="modal-content">
+                                    @csrf
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="bookingModalLabel{{ $sponser->id }}">Book:
+                                            {{ $sponser->name }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="created_by" value="{{ Auth::id() }}">
+                                        <input type="hidden" name="sponser_id" value="{{ $sponser->id }}">
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Your Name</label>
+                                            <input type="text" name="name" class="form-control" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Email Address</label>
+                                            <input type="email" name="email" class="form-control" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Phone Number</label>
+                                            <input type="text" name="phone" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Confirm Booking</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    @endif
                 @empty
+                    <p>No Sponsors Found</p>
                 @endforelse
 
 
@@ -199,7 +263,12 @@
         </div>
     </section>
 
+    <style>
+        .modal-backdrop.show {
+            --bs-backdrop-zindex: 0 !important;
 
+        }
+    </style>
 
 
 
@@ -211,31 +280,21 @@
                 <div class="sponsor-track">
                     <!-- Your logos — repeat only ONCE -->
                     <div class="sponsor-logos">
-                        <img src="https://images.seeklogo.com/logo-png/39/1/pran-logo-png_seeklogo-392860.png"
-                            alt="Sponsor 1" />
-                        <img src="https://images.seeklogo.com/logo-png/25/2/rfl-logo-png_seeklogo-250040.png"
-                            alt="Sponsor 2" />
-                        <img src="https://images.seeklogo.com/logo-png/39/1/pran-logo-png_seeklogo-392860.png"
-                            alt="Sponsor 3" />
-                        <img src="https://images.seeklogo.com/logo-png/25/2/rfl-logo-png_seeklogo-250040.png"
-                            alt="Sponsor 4" />
-                        <img src="https://images.seeklogo.com/logo-png/39/1/pran-logo-png_seeklogo-392860.png"
-                            alt="Sponsor 5" />
+                        @forelse($logos as $logo)
+                            <img src="{{ asset($logo->image) }}" alt="Sponsor 1" />
+                        @empty
+                        @endforelse
+
+
                         <!-- Add more logos as needed -->
                     </div>
 
                     <!-- Duplicate for infinite seamless scroll -->
                     <div class="sponsor-logos">
-                        <img src="https://images.seeklogo.com/logo-png/39/1/pran-logo-png_seeklogo-392860.png"
-                            alt="Sponsor 1" />
-                        <img src="https://images.seeklogo.com/logo-png/25/2/rfl-logo-png_seeklogo-250040.png"
-                            alt="Sponsor 2" />
-                        <img src="https://images.seeklogo.com/logo-png/39/1/pran-logo-png_seeklogo-392860.png"
-                            alt="Sponsor 3" />
-                        <img src="https://images.seeklogo.com/logo-png/25/2/rfl-logo-png_seeklogo-250040.png"
-                            alt="Sponsor 4" />
-                        <img src="https://images.seeklogo.com/logo-png/39/1/pran-logo-png_seeklogo-392860.png"
-                            alt="Sponsor 5" />
+                        @forelse($logos as $logo)
+                            <img src="{{ asset($logo->image) }}" alt="Sponsor 1" />
+                        @empty
+                        @endforelse
                     </div>
                 </div>
             </div>

@@ -60,6 +60,32 @@
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Sponsors List</span></a>
     </li>
+    <li class="nav-item {{ request()->routeIs('admin.sponsers_booking_lists') ? 'active' : '' }}">
+        <a class="nav-link " href="{{ route('admin.sponsers_booking_lists') }}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Sponsors Booking List</span></a>
+    </li>
+    <li class="nav-item {{ request()->routeIs('admin.companies_logo') ? 'active' : '' }}">
+        <a class="nav-link " href="{{ route('admin.companies_logo') }}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Companies Logo</span></a>
+    </li>
+
+    <li class="nav-item {{ request()->routeIs('admin.footer') ? 'active' : '' }}">
+        <a class="nav-link " href="{{ route('admin.footer') }}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Footer</span></a>
+    </li>
+    <li class="nav-item {{ request()->routeIs('admin.mission') ? 'active' : '' }}">
+        <a class="nav-link " href="{{ route('admin.mission') }}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Mission</span></a>
+    </li>
+    <li class="nav-item {{ request()->routeIs('admin.vision') ? 'active' : '' }}">
+        <a class="nav-link " href="{{ route('admin.vision') }}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Vision</span></a>
+    </li>
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"

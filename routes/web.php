@@ -12,6 +12,14 @@ Route::get('/event/details/{id}',[FontendController::class,'event_details'])->na
 
 Route::post('/event/booking',[FontendController::class,'event_booking'])->name('event_booking');
 
+Route::post('/sponser/book',[FontendController::class,'sponser_book'])->name('sponser.book');
+
+
+Route::get('/mission',[FontendController::class,'mission'])->name('mission');
+Route::get('/vision',[FontendController::class,'vision'])->name('vision');
+
+
+
 
 
 
@@ -86,7 +94,35 @@ Route::prefix('admin')->name('admin.')->group(function () {
      Route::delete('/sponser_dlt', [\App\Http\Controllers\Admin\Backend_controller::class,
      'sponser_dlt'])->name('sponser_dlt');
 
-        
+      Route::get('/sponsers_booking_lists', [\App\Http\Controllers\Admin\Backend_controller::class,
+      'sponsers_booking_lists'])->name('sponsers_booking_lists');
+
+       Route::get('/sponser_book_dlt/{id}', [\App\Http\Controllers\Admin\Backend_controller::class,
+       'sponser_book_dlt'])->name('sponser_book_dlt');
+
+        Route::get('/companies_logo', [\App\Http\Controllers\Admin\Backend_controller::class,
+        'companies_logo'])->name('companies_logo');
+ Route::post('/companies_logo_insert', [\App\Http\Controllers\Admin\Backend_controller::class,
+ 'companies_logo_insert'])->name('companies_logo_insert');
+        Route::get('/logo_delete/{id}', [\App\Http\Controllers\Admin\Backend_controller::class,
+        'logo_delete'])->name('logo_delete');
+  Route::get('/footer', [\App\Http\Controllers\Admin\Backend_controller::class,
+  'footer'])->name('footer');
+
+  Route::post('/footer_added', [\App\Http\Controllers\Admin\Backend_controller::class,
+  'footer_added'])->name('footer_added');
+
+  Route::get('/mission', [\App\Http\Controllers\Admin\Backend_controller::class,
+  'mission'])->name('mission');
+    Route::post('/mission_store', [\App\Http\Controllers\Admin\Backend_controller::class,
+    'mission_store'])->name('mission.store');
+  
+    Route::get('/vision', [\App\Http\Controllers\Admin\Backend_controller::class,
+    'vision'])->name('vision');
+   Route::post('/vision_store', [\App\Http\Controllers\Admin\Backend_controller::class,
+   'vision_store'])->name('vision.store');
+
+      
     });
 });
 
